@@ -1,6 +1,6 @@
 import dotenv from 'dotenv'
 import OpenAI from "openai";
-import {WeatherAgent} from "./src/weather-agent";
+import {TripAgent} from "./src/trip-agent";
 
 dotenv.config()
 
@@ -9,8 +9,8 @@ const client = new OpenAI({
 })
 
 const run = async () => {
-    const agent = new WeatherAgent(client)
-    const response = await agent.askQuestion("วันนี้ฝนจะตกไหม")
+    const agent = new TripAgent(client)
+    const response = await agent.askQuestion("อยากเที่ยวเชียงใหม่ 3 วัน คาเฟ่เยอะ ๆ งบ 10000 ช่วยวางแผนให้หน่อย")
     console.log(response)
 }
 

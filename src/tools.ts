@@ -1,35 +1,30 @@
-import {getCurrentWeather} from "./weather";
-import {getLocation} from "./location";
+import { getCurrentWeather } from "./weather";
+import { getLocation } from "./location";
+import {
+  estimateBudget
+} from "./trip";
 
 export const tools = [
-    {
-        type: 'function',
-        function: {
-            name: 'getLocation',
-            description: 'Fetches the location data of the user based on their IP address.',
-            parameters: {
-                type: 'object',
-                properties: {}
-            }
-        }
-    },
-    {
-        type: 'function',
-        function:{
-            name: 'getCurrentWeather',
-            description: 'Fetches the current weather data for a given location.',
-            parameters: {
-                type: 'object',
-                properties: {
-                    latitude: { type: 'string' },
-                    longitude: { type: 'string' },
-                }
-            }
-        }
+  {
+    type: 'function',
+    function: {
+      name: 'estimateBudget',
+      description: 'The AI must evaluate its own spending level (budget, standard, luxury) based on the users words and send it to this function to calculate the cost.',
+      parameters: {
+        type: 'object',
+        properties: {
+          days: { type: 'number' },
+          level: {
+            type: 'string',
+            enum: ['budget', 'standard', 'luxury']
+          }
+        },
+        required: ['days', 'level']
+      }
     }
-]
+  }
+];
 
 export const availableTools: {[key:string]: Function} = {
-    'getLocation': getLocation,
-    'getCurrentWeather': getCurrentWeather
-}
+  estimateBudget
+};
