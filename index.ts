@@ -1,19 +1,39 @@
-import dotenv from 'dotenv'
-import OpenAI from "openai";
-import {TripAgent} from "./src/trip-agent";
+import dotenv from 'dotenv';
+import OpenAI from 'openai';
+import readline from 'readline';
+import { MonsterHunterAI } from './src/master-Rank';
+//npx ts-node index.ts
 
-dotenv.config()
+dotenv.config();
 
-const client = new OpenAI({
+const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
-})
+});
 
-const run = async () => {
-    const agent = new TripAgent(client)
-    const response = await agent.askQuestion("อยากเที่ยวเชียงใหม่ 3 วัน คาเฟ่เยอะ ๆ งบ 10000 ช่วยวางแผนให้หน่อย")
-    console.log(response)
-}
+const monsterHunterAI = new MonsterHunterAI(openai);
 
-run().then(() => {
-    console.log("---------------------------------------------------------------------------------")
-})
+const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+});
+
+const askLoop = () => {
+    rl.question('', async (monster) => {
+        if (monster.toLowerCase() === 'ลาก่อน') {
+            console.log("👋 แล้วเจอกัน ไอหนู!");
+            rl.close();
+            return;
+        }
+
+        try {
+            const response = await monsterHunterAI.askMonsterHunterAdvice(monster);
+            console.log(`----------------------------------------------------\n${response}\n`);
+        } catch (error) {
+            console.error("❌ เกิดข้อผิดพลาด:", error);
+        }
+
+        askLoop();
+    });
+};
+
+askLoop();
